@@ -86,11 +86,6 @@ Map.prototype.findPrefectureByCode = function(code){
   return (results.length>0)? results[0] : null;
 };
 
-Map.prototype.findAreaBelongingToByCode = function(code){
-  var results = this.options.areas.filter(function(a){return a.prefectures.indexOf(code) > -1 });
-  return (results.length>0)? results[0] : null;
-};
-
 Map.prototype.isNanseiIslands = function(path){
   var islands = ["屋久島","種子島","奄美諸島","沖縄本島","多良間島","宮古島","伊是名島","伊平屋島","八重山諸島"];
   return "name" in path && islands.indexOf(path.name) > -1;
@@ -173,12 +168,7 @@ MapCanvas.prototype.renderPrefectureMap = function(){
     this.drawPrefecture(prefecture);
     context.closePath();
 
-    var area = this.findAreaBelongingToByCode(prefecture.code);
-    if (area){
-      this.setProperties(prefecture,area);
-    } else {
-      throw "No area has such prefecture code '" + code + "'.";
-    }
+    this.setProperties(prefecture, this.options.areas);
 
     context.fill();
     if (this.options.borderLineColor && this.options.borderLineWidth > 0)
@@ -218,7 +208,7 @@ MapCanvas.prototype.drawName = function(){
 
 MapCanvas.prototype.drawText = function(prefecture_or_area, point){
   var context = this.element.getContext("2d");
-  var area = this.findAreaBelongingToByCode(prefecture_or_area.code);
+  var area = this.options.areas;
   
   context.save();
 
