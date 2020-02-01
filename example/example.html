@@ -8,6 +8,7 @@
   <div id="res"></div>
   <script>
     var d = new jpmap.japanMap(document.getElementById("res"), {
+      showsPrefectureName: true,
       onSelect: function(data){
         alert(data.name);
       }

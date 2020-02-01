@@ -153,7 +153,7 @@ MapCanvas.prototype.render = function(){
   this.hovering = false;
   this.hovered  = null;
 
-  var render = this.options.selection == "area" ? this.renderAreaMap : this.renderPrefectureMap;
+  var render = this.renderPrefectureMap;
   render.apply(this);
 
   if (! this.hovering)
@@ -194,30 +194,6 @@ MapCanvas.prototype.renderPrefectureMap = function(){
   }, this);
 };
 
-MapCanvas.prototype.renderAreaMap = function(){
-  var context = this.element.getContext("2d");
-
-  this.options.areas.forEach(function(area){
-
-    context.beginPath();
-    area.prefectures.forEach(function(code){
-      var prefecture = this.findPrefectureByCode(code);
-      if (prefecture) {
-        this.drawPrefecture(prefecture);
-      } else {
-        throw "No prefecture code '" + code + "' is defined.";
-      }
-    }, this);
-    context.closePath();
-
-    this.setProperties(area,area);
-
-    context.fill();
-    if (this.options.borderLineColor && this.options.borderLineWidth > 0)
-      context.stroke();
-  }, this);
-};
-
 MapCanvas.prototype.drawPrefecture = function(prefecture){
 
   prefecture.path.forEach(function(p){
@@ -238,30 +214,13 @@ MapCanvas.prototype.drawPrefecture = function(prefecture){
 };
 
 MapCanvas.prototype.drawName = function(){
-  if (! this.options.showsPrefectureName && ! this.options.showsAreaName)
+  if (! this.options.showsPrefectureName)
     return;
-
-  var drawsArea = this.options.showsAreaName && (! this.options.showsPrefectureName || this.options.selection == "area");
-
-  if (drawsArea) {
-    this.options.areas.forEach(function(area){
-      var center = {x:0, y:0, n:0};
-      area.prefectures.forEach(function(code){
-        var prefecture = this.findPrefectureByCode(code);
-        var _center = this.getCenterOfPrefecture(prefecture);
-        center.n ++;
-        center.x = (center.x * (center.n - 1) + _center.x) / center.n;
-        center.y = (center.y * (center.n - 1) + _center.y) / center.n;
-      }, this);
-
-      this.drawText(area, center);
-    }, this);
-  } else {
-    this.options.prefectures.forEach(function(prefecture){
-      var center = this.getCenterOfPrefecture(prefecture);
-      this.drawText(prefecture, center);
-    }, this);
-  }
+  
+  this.options.prefectures.forEach(function(prefecture){
+    var center = this.getCenterOfPrefecture(prefecture);
+    this.drawText(prefecture, center);
+  }, this);
 };
 
 MapCanvas.prototype.drawText = function(prefecture_or_area, point){

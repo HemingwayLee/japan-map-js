@@ -23,7 +23,6 @@ exports.japanMap = function(ele, options) {
   }
 
   options = extend({
-    selection           : "prefecture",   // "prefecture" or "area"
     width               : null,           // Canvas will be scaled to larger one of "width" and "height".
     height              : null,
     color               : "#a0a0a0",      // Default color, which used if no color is set in "areas" object.
