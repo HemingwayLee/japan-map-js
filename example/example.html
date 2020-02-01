@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example</title>
+  <script src="../jpmap.min.js"></script>
+</head>
+<body>
+  <div id="res"></div>
+  <script>
+    var d = new jpmap.japanMap(document.getElementById("res"), {
+      onSelect: function(data){
+        alert(data.name);
+      }
+    });
+  </script>
+</body>
+</html>
