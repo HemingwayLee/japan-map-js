@@ -107,12 +107,10 @@ Map.prototype.brighten = function(hex, lum) {
 };
 
 Map.prototype.getName = function(prefecture_or_area){
-  switch (this.options.prefectureNameType){
-    case "english" : return this.getEnglishName(prefecture_or_area);
-    case "romaji"  : return this.getEnglishName(prefecture_or_area);
-    case "full"  : return prefecture_or_area.name;
-    case "kanji"   : return prefecture_or_area.name;
-    default    : return prefecture_or_area.name;
+  switch (this.options.lang){
+    case "en" : return this.getEnglishName(prefecture_or_area);
+    case "ja" : return prefecture_or_area.name;
+    default   : return prefecture_or_area.name;
   }
 };
 
