@@ -35,20 +35,15 @@ exports.japanMap = function(ele, options) {
     drawsBoxLine        : true,
     showsPrefectureName : false,
     prefectureNameType  : "full",
-    showsAreaName       : false,
-    areaNameType        : "full",
     areas               : core.definition_of_allJapan,
     prefectures         : core.definition_of_prefectures,
     movesIslands        : false,          //  Moves Nansei Islands (Okinawa and part of Kagishima) to the left-top space.
     font                : "Arial",
     fontSize            : null,
-    fontColor           : null,
-    fontShadowColor     : null,
+    fontColor           : "#000000",
     onSelect            : function(){},
     onHover             : function(){}
   }, options);
-
-  console.log(options)
 
   var map = new MapCanvas(options);
   ele.appendChild(map.element);

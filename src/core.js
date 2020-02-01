@@ -112,7 +112,7 @@ Map.prototype.brighten = function(hex, lum) {
 };
 
 Map.prototype.getName = function(prefecture_or_area){
-  switch (this.isArea(prefecture_or_area)? this.options.areaNameType : this.options.prefectureNameType){
+  switch (this.options.prefectureNameType){
     case "english" : return this.getEnglishName(prefecture_or_area);
     case "romaji"  : return this.getEnglishName(prefecture_or_area);
     case "full"  : return prefecture_or_area.name;
@@ -122,14 +122,7 @@ Map.prototype.getName = function(prefecture_or_area){
 };
 
 Map.prototype.getEnglishName = function(prefecture_or_area){
-  if (this.isArea(prefecture_or_area)){
-    return prefecture_or_area.english? prefecture_or_area.english : null;
-  }
   return definition_of_english_name[prefecture_or_area.code];
-};
-
-Map.prototype.isArea = function(prefecture_or_area){
-  return this.options.areas.indexOf(prefecture_or_area) > -1;
 };
 
 MapCanvas = function(){
@@ -225,21 +218,12 @@ MapCanvas.prototype.drawName = function(){
 
 MapCanvas.prototype.drawText = function(prefecture_or_area, point){
   var context = this.element.getContext("2d");
-  var area = this.isArea(prefecture_or_area)? prefecture_or_area : this.findAreaBelongingToByCode(prefecture_or_area.code);
-  var drawsArea = this.options.showsAreaName && (! this.options.showsPrefectureName || this.options.selection == "area");
-
-
+  var area = this.findAreaBelongingToByCode(prefecture_or_area.code);
+  
   context.save();
 
   if (this.options.fontColor && this.options.fontColor == "areaColor"){
-    var hovered;
-    if (drawsArea == (this.options.selection == "area")){
-      hovered = this.hovered == prefecture_or_area.code;
-    } else if (drawsArea) {
-      hovered = area.prefectures.indexOf(this.hovered) > -1;
-    } else {
-      hovered = this.hovered == area.code;
-    }
+    var hovered = this.hovered == area.code;
     var color   = area.color? area.color : this.options.color;
     var hvColor = area.color && area.hoverColor ?
       area.hoverColor :
@@ -257,10 +241,6 @@ MapCanvas.prototype.drawText = function(prefecture_or_area, point){
   context.font = (this.options.fontSize? this.options.fontSize : this.element.width / 100) + "px '" + (this.options.font? this.options.font : "Arial") + "'";
   context.textAlign = 'center';
   context.textBaseline = 'middle';
-  if (this.options.fontShadowColor){
-    context.shadowColor = this.options.fontShadowColor;
-    context.shadowBlur = 5;
-  }
 
   for (var i = 0; i < 5; i++)
     context.fillText(this.getName(prefecture_or_area), point.x * this.element.width / this.base.width, point.y * this.element.height / this.base.height);
