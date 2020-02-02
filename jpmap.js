@@ -9,16 +9,13 @@ Map = function(options){
 };
 
 Map.prototype.initializeData = function(){
-  this.setData(null,null);
+  this.setData(null);
 };
 
-Map.prototype.setData = function(prefecture,area){
+Map.prototype.setData = function(prefecture){
   this.data = {
     code : prefecture? prefecture.code : null,
-    name : prefecture? this.getName(prefecture) : null,
-    fullName : prefecture? prefecture.name: null,
-    englishName : prefecture? this.getEnglishName(prefecture) : null,
-    area : area? area : null
+    name : prefecture? this.getName(prefecture) : null
   };
 };
 
@@ -167,7 +164,7 @@ MapCanvas.prototype.renderPrefectureMap = function(){
     this.drawPrefecture(prefecture);
     context.closePath();
 
-    this.setProperties(prefecture, this.options.areas);
+    this.setProperties(prefecture);
 
     context.fill();
     if (this.options.borderLineColor && this.options.borderLineWidth > 0)
@@ -207,21 +204,10 @@ MapCanvas.prototype.drawName = function(){
 
 MapCanvas.prototype.drawText = function(prefecture_or_area, point){
   var context = this.element.getContext("2d");
-  var area = this.options.areas;
   
   context.save();
 
-  if (this.options.fontColor && this.options.fontColor == "areaColor"){
-    var hovered = this.hovered == area.code;
-    var color   = area.color? area.color : this.options.color;
-    var hvColor = area.color && area.hoverColor ?
-      area.hoverColor :
-      area.color?
-        this.brighten(area.color, 0.2) :
-        this.options.hoverColor? this.options.hoverColor : this.brighten(this.options.color, 0.2);
-
-    context.fillStyle = hovered ? hvColor : color;
-  } else if (this.options.fontColor) {
+  if (this.options.fontColor) {
     context.fillStyle = this.options.fontColor;
   } else {
     context.fillStyle = this.options.color;
@@ -323,9 +309,9 @@ MapCanvas.prototype.drawIslandsLine = function(){
   }
 };
 
-MapCanvas.prototype.setProperties = function(prefecture, area){
+MapCanvas.prototype.setProperties = function(prefecture){
   var context = this.element.getContext("2d");
-  context.fillStyle = ("color" in area)? area.color : this.options.color;
+  context.fillStyle = this.options.color;
 
   if (this.options.borderLineColor)
     context.strokeStyle = this.options.borderLineColor;
@@ -340,16 +326,14 @@ MapCanvas.prototype.setProperties = function(prefecture, area){
     this.hovered  = prefecture.code;
 
     if (this.data.code != prefecture.code && this.options.onHover){
-      this.setData(prefecture,area);
+      this.setData(prefecture);
       this.options.onHover(this.data);
 
     } else {
-      this.setData(prefecture,area);
+      this.setData(prefecture);
     }
 
-    if (area.hoverColor)
-      context.fillStyle = area.hoverColor;
-    else if (this.options.hoverColor)
+    if (this.options.hoverColor)
       context.fillStyle = this.options.hoverColor;
     else
       context.fillStyle = this.brighten(context.fillStyle, 0.2);
@@ -361,16 +345,6 @@ MapCanvas.prototype.setProperties = function(prefecture, area){
 MapCanvas.prototype.isHovering = function(){
   return this.hovering;
 };
-
-var definition_of_allJapan = [
-  {
-    "code"     :0,
-    "name"     :"日本",
-    "english"  :"Japan",
-    "color"    :"#a0a0a0",
-    "prefectures":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47]
-  }
-];
 
 var definition_of_prefectures = [
 
@@ -1056,7 +1030,6 @@ var definition_of_english_name = {
 
 module.exports = {
   MapCanvas: MapCanvas,
-  definition_of_allJapan: definition_of_allJapan,
   definition_of_prefectures: definition_of_prefectures
 };
 
@@ -1100,7 +1073,6 @@ exports.japanMap = function(ele, options) {
     drawsBoxLine        : true,
     showsPrefectureName : false,
     lang                : "jp",
-    areas               : core.definition_of_allJapan,
     prefectures         : core.definition_of_prefectures,
     movesIslands        : false,          //  Moves Nansei Islands (Okinawa and part of Kagishima) to the left-top space.
     font                : "Arial",
