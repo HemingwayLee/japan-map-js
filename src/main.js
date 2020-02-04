@@ -5,7 +5,6 @@
  *
  */
 
-var lang = require('./lang.js');
 var core = require('./core.js');
 
 exports.japanMap = function(ele, options) {
@@ -34,7 +33,7 @@ exports.japanMap = function(ele, options) {
     lineWidth           : 1,
     drawsBoxLine        : true,
     showsPrefectureName : false,
-    lang                : "jp",
+    lang                : "ja",
     prefectures         : core.DefinitionOfPrefectures,
     movesIslands        : false,          //  Moves Nansei Islands (Okinawa and part of Kagishima) to the left-top space.
     font                : "Arial",

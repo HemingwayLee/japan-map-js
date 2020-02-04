@@ -1,3 +1,5 @@
+var lang = require('./lang.js');
+
 Map = function(options){
   this.options = options;
   this.base = {width:651, height:571};
@@ -103,16 +105,13 @@ Map.prototype.brighten = function(hex, lum) {
   return rgb;
 };
 
-Map.prototype.getName = function(prefecture_or_area){
-  switch (this.options.lang){
-    case "en" : return this.getEnglishName(prefecture_or_area);
-    case "ja" : return prefecture_or_area.name;
-    default   : return prefecture_or_area.name;
-  }
-};
-
-Map.prototype.getEnglishName = function(prefecture_or_area){
-  return definition_of_english_name[prefecture_or_area.code];
+Map.prototype.getName = function(prefecture) {
+  return lang.langDict[prefecture.name][this.options.lang];
+  // switch (this.options.lang){
+  //   case "en" : return this.getEnglishName(prefecture);
+  //   case "ja" : return prefecture.name;
+  //   default   : return prefecture.name;
+  // }
 };
 
 MapCanvas = function(){
@@ -201,7 +200,7 @@ MapCanvas.prototype.drawName = function(){
   }, this);
 };
 
-MapCanvas.prototype.drawText = function(prefecture_or_area, point){
+MapCanvas.prototype.drawText = function(prefecture, point){
   var context = this.element.getContext("2d");
   
   context.save();
@@ -217,7 +216,7 @@ MapCanvas.prototype.drawText = function(prefecture_or_area, point){
   context.textBaseline = 'middle';
 
   for (var i = 0; i < 5; i++)
-    context.fillText(this.getName(prefecture_or_area), point.x * this.element.width / this.base.width, point.y * this.element.height / this.base.height);
+    context.fillText(this.getName(prefecture), point.x * this.element.width / this.base.width, point.y * this.element.height / this.base.height);
   context.restore();
 };
 

@@ -235,3 +235,7 @@ var langDict = {
     ja: "沖縄県"
   }
 };
+
+module.exports = {
+  langDict: langDict
+};
