@@ -347,7 +347,6 @@ MapCanvas.prototype.isHovering = function(){
 };
 
 var definition_of_prefectures = [
-
   {
     "code" : 1,
     "name" : "北海道",
