@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example 2</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script src="../jpmap.min.js"></script>
+</head>
+<body>
+  <div id="res"></div>
+  <script>
+    var d = new jpmap.japanMap(document.getElementById("res"), {
+      borderLineColor: "#000000", 
+      onSelect: function(data){
+        alert(data.name);
+      }
+    });
+  </script>
+</body>
+</html>
