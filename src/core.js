@@ -10,13 +10,14 @@ Map = function(options){
 };
 
 Map.prototype.initializeData = function(){
-  this.setData(null);
+  this.setData(null, null);
 };
 
-Map.prototype.setData = function(prefecture){
+Map.prototype.setData = function(prefecture, area){
   this.data = {
     code : prefecture? prefecture.code : null,
-    name : prefecture? this.getName(prefecture) : null
+    name : prefecture? this.getName(prefecture) : null,
+    area : area
   };
 };
 
@@ -114,6 +115,15 @@ Map.prototype.getName = function(prefecture) {
   // }
 };
 
+Map.prototype.findAreaBelongingToByCode = function(code) {
+  if (this.options.areas == null) {
+    return null;
+  }
+
+  var results = this.options.areas.filter(function(a){return a.code == code });
+  return (results.length > 0)? results[0] : null;
+};
+
 MapCanvas = function(){
   var available = !!document.createElement('canvas').getContext;
   if (! available){
@@ -162,11 +172,13 @@ MapCanvas.prototype.renderPrefectureMap = function(){
     this.drawPrefecture(prefecture);
     context.closePath();
 
-    this.setProperties(prefecture);
+    var area = this.findAreaBelongingToByCode(prefecture.code);
+    this.setProperties(prefecture, area);
 
     context.fill();
-    if (this.options.borderLineColor && this.options.borderLineWidth > 0)
+    if (this.options.borderLineColor && this.options.borderLineWidth > 0) {
       context.stroke();
+    }
 
   }, this);
 };
@@ -181,7 +193,10 @@ MapCanvas.prototype.drawPrefecture = function(prefecture){
         Y:OFFSET.Y + (this.isNanseiIslands(p)? this.NanseiIslands.top  : 0)
       };
     }
-    if ("coords"  in p) this.drawCoords(p.coords, OFFSET);
+    if ("coords"  in p) {
+      this.drawCoords(p.coords, OFFSET);
+    }
+
     if ("subpath" in p){
       p.subpath.forEach(function(s){
         if ("coords" in s) this.drawCoords(s.coords, OFFSET);
@@ -307,9 +322,9 @@ MapCanvas.prototype.drawIslandsLine = function(){
   }
 };
 
-MapCanvas.prototype.setProperties = function(prefecture){
+MapCanvas.prototype.setProperties = function(prefecture, area){
   var context = this.element.getContext("2d");
-  context.fillStyle = this.options.color;
+  context.fillStyle = (area && area.color) ? area.color : this.options.color;
 
   if (this.options.borderLineColor)
     context.strokeStyle = this.options.borderLineColor;
@@ -324,17 +339,18 @@ MapCanvas.prototype.setProperties = function(prefecture){
     this.hovered  = prefecture.code;
 
     if (this.data.code != prefecture.code && this.options.onHover){
-      this.setData(prefecture);
+      this.setData(prefecture, area);
       this.options.onHover(this.data);
 
     } else {
-      this.setData(prefecture);
+      this.setData(prefecture, area);
     }
 
-    if (this.options.hoverColor)
+    if (this.options.hoverColor) {
       context.fillStyle = this.options.hoverColor;
-    else
+    } else {
       context.fillStyle = this.brighten(context.fillStyle, 0.2);
+    }
   }
 
   this.element.style.cursor = (this.data.code == null)? "default" : "pointer";
