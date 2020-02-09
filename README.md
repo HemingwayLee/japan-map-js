@@ -1,12 +1,19 @@
 # japan-map-js
 Clickable map of prefectures of Japan. It is from ![japan-map](http://takemaru-hirai.github.io/japan-map/). The dependency of jQuery is removed from this project.
 
-# Installation
+# Setup
 
-Include the library and the css
+Include the library
 
 ```html
 <script type="text/javascript" src="dist/jpmap.min.js"></script>
+```
+
+## CDN - UNPKG
+To access `japan-map-js` directly from the UNPKG CDN servers, include the following line at the start of your project, instead of the localy hosted versions:
+
+```html
+<script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.0/dist/jpmap.min.js"></script>
 ```
 
 Create an element to hold the map
