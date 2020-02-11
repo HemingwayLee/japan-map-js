@@ -64,7 +64,10 @@ Map.prototype.addEvent = function(){
       y: e.pageY - _target.offsetTop
     };
     self.render();
-
+    
+    if (!self.isHovering()) {
+      self.options.onHoverOut(self.data);
+    }
   });
 
   _target.addEventListener("mousedown", function(e){
@@ -1320,7 +1323,8 @@ exports.japanMap = function(ele, options) {
     fontSize            : null,
     fontColor           : "#000000",
     onSelect            : function(){},
-    onHover             : function(){}
+    onHover             : function(){},
+    onHoverOut          : function(){}
   }, options);
 
   var map = new MapCanvas(options);

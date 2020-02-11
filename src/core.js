@@ -63,7 +63,10 @@ Map.prototype.addEvent = function(){
       y: e.pageY - _target.offsetTop
     };
     self.render();
-
+    
+    if (!self.isHovering()) {
+      self.options.onHoverOut(self.data);
+    }
   });
 
   _target.addEventListener("mousedown", function(e){

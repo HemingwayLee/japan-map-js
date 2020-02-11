@@ -41,7 +41,8 @@ exports.japanMap = function(ele, options) {
     fontSize            : null,
     fontColor           : "#000000",
     onSelect            : function(){},
-    onHover             : function(){}
+    onHover             : function(){},
+    onHoverOut          : function(){}
   }, options);
 
   var map = new MapCanvas(options);
