@@ -1,5 +1,5 @@
 # japan-map-js
-Clickable map of prefectures of Japan. It is from ![japan-map](http://takemaru-hirai.github.io/japan-map/). The dependency of jQuery is removed from this project.
+Clickable map of prefectures of Japan. It is from [japan-map!](http://takemaru-hirai.github.io/japan-map/). The dependency of jQuery is removed from this project.
 
 # Setup
 
