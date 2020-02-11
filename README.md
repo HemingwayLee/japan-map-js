@@ -13,7 +13,7 @@ Include the library
 To access `japan-map-js` directly from the UNPKG CDN servers, include the following line at the start of your project, instead of the localy hosted versions:
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.0/dist/jpmap.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
 ```
 
 Create an element to hold the map
