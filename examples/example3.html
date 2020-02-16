@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Example 3</title>
+  <title>nCoV Japan Map</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <script type="text/javascript" src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
   <style>
@@ -10,8 +10,8 @@
     }
 
     #tooltip {
-      color: #ffffff; 
-      background-color: #ff0000;
+      color: #222222; 
+      background-color: #ffdd00;
       padding: 5px;
       text-decoration:none;
       position:relative;
@@ -20,7 +20,7 @@
   </style>
 </head>
 <body>
-  <span id="text" style="display:inline-block; width: 1002px; color: #ffffff; background-color: #ff0000; text-align: center">令和2年2月10日版</span>
+  <span id="text" style="display:inline-block; width: 1002px; color: #ffffff; background-color: #ff0000; text-align: center">令和2年2月15日版</span>
   <span id="tooltip"></span>
   <div id="my-map"></div>
   <script>
@@ -30,20 +30,20 @@
     }
 
     function getColorCode(target) {
-      const c = Math.round(255.0 - scale(0,255,0,15,target)).toString(16).padStart(2, "0");
+      const c = Math.round(255.0 - scale(0,255,0,20,target)).toString(16).padStart(2, "0");
       return "#FF" + c + c;
     }
 
     var tooltipSpan = document.getElementById('tooltip');
     window.onmousemove = function (e) {
         var x = e.clientX, y = e.clientY;
-        tooltipSpan.style.top = (y + 20) + 'px';
-        tooltipSpan.style.left = (x + 20) + 'px';
+        tooltipSpan.style.top = (y + 16) + 'px';
+        tooltipSpan.style.left = (x + 16) + 'px';
     };
 
     var d = new jpmap.japanMap(document.getElementById("my-map"), {
       areas: [
-        { "code":1, "color": getColorCode(1), "number": 1 }, 
+        { "code":1, "color": getColorCode(2), "number": 2 }, 
         { "code":2, "color": getColorCode(0), "number": 0 },
         { "code":3, "color": getColorCode(0), "number": 0 },
         { "code":4, "color": getColorCode(0), "number": 0 },
@@ -53,10 +53,10 @@
         { "code":8, "color": getColorCode(0), "number": 0 },
         { "code":9, "color": getColorCode(0), "number": 0 },
         { "code":10, "color": getColorCode(0), "number": 0 },
-        { "code":11, "color": getColorCode(0), "number": 0 },
-        { "code":12, "color": getColorCode(4), "number": 4 },
-        { "code":13, "color": getColorCode(13), "number": 13 },
-        { "code":14, "color": getColorCode(1), "number": 1 },
+        { "code":11, "color": getColorCode(1), "number": 1 },
+        { "code":12, "color": getColorCode(6), "number": 6 },
+        { "code":13, "color": getColorCode(18), "number": 18 },
+        { "code":14, "color": getColorCode(4), "number": 4 },
         { "code":15, "color": getColorCode(0), "number": 0 },
         { "code":16, "color": getColorCode(0), "number": 0 },
         { "code":17, "color": getColorCode(0), "number": 0 },
@@ -65,14 +65,14 @@
         { "code":20, "color": getColorCode(0), "number": 0 },
         { "code":21, "color": getColorCode(0), "number": 0 },
         { "code":22, "color": getColorCode(0), "number": 0 },
-        { "code":23, "color": getColorCode(2), "number": 2 },
+        { "code":23, "color": getColorCode(4), "number": 4 },
         { "code":24, "color": getColorCode(1), "number": 1 },
         { "code":25, "color": getColorCode(0), "number": 0 },
         { "code":26, "color": getColorCode(2), "number": 2 },
         { "code":27, "color": getColorCode(1), "number": 1 },
         { "code":28, "color": getColorCode(0), "number": 0 },
         { "code":29, "color": getColorCode(1), "number": 1 },
-        { "code":30, "color": getColorCode(0), "number": 0 },
+        { "code":30, "color": getColorCode(5), "number": 5 },
         { "code":31, "color": getColorCode(0), "number": 0 },
         { "code":32, "color": getColorCode(0), "number": 0 },
         { "code":33, "color": getColorCode(0), "number": 0 },
@@ -89,14 +89,21 @@
         { "code":44, "color": getColorCode(0), "number": 0 },
         { "code":45, "color": getColorCode(0), "number": 0 },
         { "code":46, "color": getColorCode(0), "number": 0 },
-        { "code":47, "color": getColorCode(0), "number": 0 }
+        { "code":47, "color": getColorCode(1), "number": 1 }
       ],
+      hoverColor: "#ffdd00",
       movesIslands : true,
       borderLineColor: "#000000",
       width: 1000,
       onHover: function(data){
         var tt = document.getElementById("tooltip");
-        tt.innerHTML = (data.name + " 感染者数: " + data.area.number);
+
+        if (data.area.number == 0) {
+          tt.innerHTML = (data.name);
+        } else {
+          tt.innerHTML = (data.name + " 感染者数: " + data.area.number);
+        }
+
         tt.style = "display:block; position:fixed; overflow:hidden;";
       },
       onHoverOut: function(data) {
