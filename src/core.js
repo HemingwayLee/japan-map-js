@@ -59,8 +59,8 @@ Map.prototype.addEvent = function(){
 
   _target.addEventListener("mousemove", function(e){
     self.pointer = {
-      x: e.pageX - _target.offsetLeft,
-      y: e.pageY - _target.offsetTop
+      x: (e.pageX - _target.offsetLeft) / _target.clientWidth * self.size.width,
+      y: (e.pageY - _target.offsetTop) / _target.clientHeight * self.size.height
     };
     self.render();
     
